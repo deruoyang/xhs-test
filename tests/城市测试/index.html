@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>城市测试</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: linear-gradient(135deg, #f5a623 0%, #e8754a 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .container {
+    width: 100%;
+    max-width: 400px;
+    background: #fff;
+    border-radius: 20px;
+    padding: 32px 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  /* 进度条 */
+  .progress-bar {
+    width: 100%;
+    height: 5px;
+    background: #f0f0f0;
+    border-radius: 3px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f5a623, #e8754a);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+  }
+
+  /* 题目页 */
+  .question-number {
+    font-size: 12px;
+    color: #bbb;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+  .question-text {
+    font-size: 19px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 24px;
+    line-height: 1.55;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid #eee;
+    border-radius: 14px;
+    background: #fff;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    line-height: 1.5;
+  }
+  .option:active { transform: scale(0.98); }
+  .option.selected { border-color: #f5a623; background: #fffaf2; }
+  .option-letter {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 12px;
+    color: #f5a623;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .option.selected .option-letter { background: #f5a623; color: #fff; }
+
+  /* 开始页 */
+  .start-page { text-align: center; }
+  .start-icon { font-size: 68px; margin-bottom: 16px; }
+  .start-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .start-desc {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 6px;
+    line-height: 1.7;
+  }
+  .start-count { font-size: 13px; color: #ccc; margin-bottom: 28px; }
+  .start-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, #f5a623, #e8754a);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+  .start-btn:active { opacity: 0.9; transform: scale(0.98); }
+
+  /* 结果页 */
+  .result-page { display: none; }
+  .result-header { text-align: center; margin-bottom: 20px; }
+  .result-icon { font-size: 60px; margin-bottom: 12px; }
+  .result-type {
+    font-size: 26px;
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 6px;
+  }
+  .result-subtitle {
+    font-size: 13px;
+    color: #f5a623;
+    font-weight: 600;
+    background: #fffaf2;
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+  .trait {
+    padding: 5px 14px;
+    background: #fff5e6;
+    color: #e8754a;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .result-section {
+    background: #fafafa;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+  }
+  .result-section h3 {
+    font-size: 12px;
+    color: #bbb;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .result-section p {
+    font-size: 14px;
+    color: #444;
+    line-height: 1.75;
+  }
+  .result-advice {
+    background: #fffaf2;
+    border-left: 3px solid #f5a623;
+    border-radius: 0 14px 14px 0;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .result-advice p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.75;
+    font-style: italic;
+  }
+  .share-card {
+    background: linear-gradient(135deg, #f5a623, #e8754a);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+  .share-card p {
+    font-size: 14px;
+    color: #fff;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .restart-btn {
+    width: 100%;
+    padding: 14px;
+    background: #f5f5f5;
+    color: #888;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .restart-btn:active { opacity: 0.8; transform: scale(0.98); }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- 开始页 -->
+  <div class="start-page" id="startPage">
+    <div class="start-icon" id="startIcon">🏙️</div>
+    <div class="start-title" id="startTitle">城市测试</div>
+    <div class="start-desc" id="startDesc">跟着第一感觉选，你的身体早就替你选好了</div>
+    <div class="start-count" id="startCount">已有 8,832 人参与测试</div>
+    <button class="start-btn" onclick="startTest()">开始测试</button>
+  </div>
+
+  <!-- 答题页 -->
+  <div id="questionPage" class="hidden">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div class="question-number" id="questionNumber"></div>
+    <div class="question-text" id="questionText"></div>
+    <div class="options" id="optionsContainer"></div>
+  </div>
+
+  <!-- 结果页 -->
+  <div class="result-page" id="resultPage">
+    <div class="progress-bar">
+      <div class="progress-fill" style="width: 100%"></div>
+    </div>
+    <div class="result-header">
+      <div class="result-icon" id="resultIcon"></div>
+      <div class="result-type" id="resultType"></div>
+      <div class="result-subtitle" id="resultSubtitle"></div>
+      <div class="traits" id="resultTraits"></div>
+    </div>
+    <div class="result-section">
+      <h3>你是这样的人</h3>
+      <p id="resultAnalysis"></p>
+    </div>
+    <div class="result-advice">
+      <p id="resultAdvice"></p>
+    </div>
+    <div class="share-card" id="shareCard"></div>
+    <button class="restart-btn" onclick="restartTest()">再测一次</button>
+  </div>
+
+</div>
+
+<script>
+let config = null;
+let currentQuestion = 0;
+let scores = {};
+
+fetch('config.json')
+  .then(r => r.json())
+  .then(c => { config = c; renderStart(); })
+  .catch(() => { alert('配置文件加载失败，请刷新重试'); });
+
+function renderStart() {
+  document.getElementById('startIcon').textContent = config.icon || '🏙️';
+  document.getElementById('startTitle').textContent = config.title;
+  document.getElementById('startDesc').textContent = config.description;
+  document.getElementById('startCount').textContent =
+    `已有 ${(config.participantCount || 10000).toLocaleString()} 人参与测试`;
+}
+
+function startTest() {
+  currentQuestion = 0;
+  scores = {};
+  document.getElementById('startPage').classList.add('hidden');
+  document.getElementById('questionPage').classList.remove('hidden');
+  document.getElementById('resultPage').style.display = 'none';
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = config.questions[currentQuestion];
+  const total = config.questions.length;
+  document.getElementById('progressFill').style.width = (currentQuestion / total * 100) + '%';
+  document.getElementById('questionNumber').textContent = `${currentQuestion + 1} / ${total}`;
+  document.getElementById('questionText').textContent = q.text;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  const container = document.getElementById('optionsContainer');
+  container.innerHTML = q.options.map((opt, i) => `
+    <button class="option" onclick="selectOption(${i})">
+      <span class="option-letter">${letters[i]}</span>
+      <span>${opt.text}</span>
+    </button>
+  `).join('');
+}
+
+function selectOption(index) {
+  const q = config.questions[currentQuestion];
+  const optScores = q.options[index].scores;
+  for (const [key, val] of Object.entries(optScores)) {
+    scores[key] = (scores[key] || 0) + val;
+  }
+  currentQuestion++;
+  if (currentQuestion >= config.questions.length) {
+    showResult();
+  } else {
+    showQuestion();
+  }
+}
+
+function calcResult() {
+  let maxKey = null;
+  let maxVal = -1;
+  for (const [key, val] of Object.entries(scores)) {
+    if (val > maxVal) { maxVal = val; maxKey = key; }
+  }
+  return maxKey;
+}
+
+function showResult() {
+  document.getElementById('questionPage').classList.add('hidden');
+  const resultPage = document.getElementById('resultPage');
+  resultPage.style.display = 'block';
+
+  const key = calcResult();
+  const result = config.results[key] || config.results[Object.keys(config.results)[0]];
+
+  document.getElementById('resultIcon').textContent = result.icon;
+  document.getElementById('resultType').textContent = result.type;
+  document.getElementById('resultSubtitle').textContent = result.subtitle;
+  document.getElementById('resultTraits').innerHTML =
+    result.traits.map(t => `<span class="trait">${t}</span>`).join('');
+  document.getElementById('resultAnalysis').textContent = result.analysis;
+  document.getElementById('resultAdvice').textContent = result.advice;
+
+  const shareCard = document.getElementById('shareCard');
+  if (config.shareText) {
+    shareCard.innerHTML = `<p>${config.shareText}</p>`;
+    shareCard.style.display = 'block';
+  } else {
+    shareCard.style.display = 'none';
+  }
+}
+
+function restartTest() {
+  currentQuestion = 0;
+  scores = {};
+  document.getElementById('resultPage').style.display = 'none';
+  document.getElementById('startPage').classList.remove('hidden');
+}
+</script>
+</body>
+</html>

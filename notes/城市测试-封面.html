@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>城市测试封面</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #f0ede8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  }
+
+  .cover {
+    width: 1080px;
+    height: 1440px;
+    background: linear-gradient(160deg, #f5efe6 0%, #ede4d8 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 80px 80px 100px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 背景装饰圆 */
+  .cover::before {
+    content: '';
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: rgba(180,140,110,0.06);
+    top: -200px;
+    right: -200px;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: rgba(180,140,110,0.04);
+    bottom: -100px;
+    left: -150px;
+  }
+
+  /* 顶部签名句 */
+  .signature {
+    font-size: 32px;
+    color: rgba(100,70,50,0.55);
+    font-weight: 400;
+    letter-spacing: 2px;
+    margin-bottom: 120px;
+  }
+
+  /* 主体区 */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .question-label {
+    font-size: 28px;
+    color: rgba(100,70,50,0.45);
+    margin-bottom: 32px;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .question {
+    font-size: 72px;
+    font-weight: 900;
+    color: #3a2a1e;
+    line-height: 1.25;
+    margin-bottom: 80px;
+    letter-spacing: -1px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid rgba(180,140,110,0.2);
+    border-radius: 20px;
+    padding: 28px 36px;
+  }
+
+  .option-letter {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(180,140,110,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 800;
+    color: #8b6347;
+    flex-shrink: 0;
+  }
+
+  .option-text {
+    font-size: 36px;
+    color: #4a3525;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+  }
+
+  /* 底部提示 */
+  .footer {
+    margin-top: 80px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(140,100,70,0.35);
+  }
+
+  .footer-text {
+    font-size: 28px;
+    color: rgba(100,70,50,0.45);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="signature">答案一直在你这里，只是还没被看见</div>
+
+  <div class="main">
+    <div class="question-label">跟着第一感觉选 ↓</div>
+    <div class="question">周末睡醒，你第一件事想做什么？</div>
+
+    <div class="options">
+      <div class="option">
+        <div class="option-letter">A</div>
+        <div class="option-text">开窗，有风有光就够了</div>
+      </div>
+      <div class="option">
+        <div class="option-letter">B</div>
+        <div class="option-text">出门找热气腾腾的早饭</div>
+      </div>
+      <div class="option">
+        <div class="option-letter">C</div>
+        <div class="option-text">戴耳机出门，没有目的地走</div>
+      </div>
+      <div class="option">
+        <div class="option-letter">D</div>
+        <div class="option-text">继续窝着，等身体自己醒透</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-dot"></div>
+    <div class="footer-text">选完点进来看结果</div>
+  </div>
+</div>
+</body>
+</html>
